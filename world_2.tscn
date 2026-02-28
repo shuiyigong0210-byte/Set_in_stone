@@ -114,7 +114,6 @@ shape = SubResource("CircleShape2D_q40lw")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Chisel" unique_id=307378878]
 replication_config = SubResource("SceneReplicationConfig_yoy7d")
-public_visibility = false
 
 [node name="MoveSound" type="AudioStreamPlayer2D" parent="Chisel" unique_id=1264463365]
 stream = ExtResource("8_56e56")
