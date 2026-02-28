@@ -10,15 +10,15 @@ extends Node2D
 @onready var path_2 = $Path2
 
 func _ready():
-	# 1. 初始视觉设置：Join 进来第一时间隐藏路径
-	# 不管三七二十一，先检查是不是服务器，不是就关掉显示
+	await get_tree().process_frame # 等一帧再判断
 	if path_2:
-		if multiplayer.is_server():
-			path_2.visible = true
-			print("我是 Host，我能看到路径")
+		if not multiplayer.is_server():
+			# 方法 A: 彻底从本地树中移除（Join 端完全消失，绝对看不到）
+			path_2.queue_free() 
+			print("我是 Join，已物理删除路径节点")
 		else:
-			path_2.visible = false
-			print("我是 Join，我看不见路径")
+			path_2.visible = true
+			print("我是 Host，路径已保留")
 
 	# 2. UI 初始化
 	restart_button.visible = false
