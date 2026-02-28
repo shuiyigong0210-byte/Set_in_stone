@@ -91,3 +91,7 @@ stream = ExtResource("7_pkg7o")
 volume_db = 2.0
 autoplay = true
 parameters/looping = true
+
+[node name="Checkpoint" type="Area2D" parent="." unique_id=1648755702]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint" unique_id=269301760]
