@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dvvrapybb0ep2" path="res://world.gd" id="1_aqk2v"]
 [ext_resource type="Shader" uid="uid://dyfl353co8qfb" path="res://stone.gdshader" id="2_036b0"]
 [ext_resource type="Script" uid="uid://dqylxj04drhtt" path="res://chisel.gd" id="2_tlwt5"]
-[ext_resource type="Texture2D" uid="uid://c6s8r5jdk8qk0" path="res://assets/icons/background/51b71762d1b2613ff90096a9c409869f.png" id="3_dwbse"]
+[ext_resource type="Texture2D" uid="uid://c2eefnpuajswg" path="res://assets/icons/background/665191667034ac616a0eccbd5007baf8.png" id="3_dwbse"]
 [ext_resource type="Texture2D" uid="uid://dc2420lb5yk0y" path="res://assets/brush/brush2.png" id="4_dwbse"]
 [ext_resource type="Texture2D" uid="uid://dckf2p5g3gixj" path="res://assets/icons/kenney_ui-pack-rpg-expansion/PNG/cursorSword_silver.png" id="6_pkg7o"]
 
@@ -31,8 +31,8 @@ script = ExtResource("1_aqk2v")
 
 [node name="Sprite2D" type="Sprite2D" parent="Stone" unique_id=1049935039]
 material = SubResource("ShaderMaterial_pkg7o")
-position = Vector2(641, 346.50003)
-scale = Vector2(13.820002, 7.930001)
+position = Vector2(638.50006, 361.50003)
+scale = Vector2(0.8462051, 0.8257403)
 texture = ExtResource("3_dwbse")
 
 [node name="DrawingViewport" type="SubViewport" parent="Stone" unique_id=1001890164]

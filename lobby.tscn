@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b2veilyk4yl88" path="res://assets/icons/background/0270c3583503546586f6f6b3bca27f01.png" id="2_xrgmn"]
 [ext_resource type="FontFile" uid="uid://bnmbi1vmxhowr" path="res://assets/fonts/Xolonium-Regular.ttf" id="3_tftiq"]
 [ext_resource type="Texture2D" uid="uid://b6ah2sdcs1tyg" path="res://assets/icons/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="4_1gg6n"]
+[ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="5_1gg6n"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xrgmn"]
 load_path = "res://.godot/imported/tile_0000.png-666dca4cc0ffcdda9add9aec319b0085.ctex"
@@ -97,3 +98,9 @@ anchor_bottom = 2.538
 offset_right = 183.64
 offset_bottom = 75.479996
 text = "Debug"
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=447726481]
+stream = ExtResource("5_1gg6n")
+volume_db = 10.0
+
+[connection signal="pressed" from="DebugButton" to="." method="_on_debug_button_pressed"]
