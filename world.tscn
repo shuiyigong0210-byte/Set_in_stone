@@ -54,6 +54,7 @@ texture = ExtResource("4_dwbse")
 
 [node name="Chisel" type="CharacterBody2D" parent="." unique_id=1540427066]
 script = ExtResource("2_tlwt5")
+speed = 200.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Chisel" unique_id=2087846355]
 position = Vector2(22, 29)
@@ -73,8 +74,13 @@ stream = ExtResource("7_gbfbk")
 volume_db = 24.0
 parameters/looping = true
 
-[node name="Line2D" type="Line2D" parent="." unique_id=572021052]
-points = PackedVector2Array(2, 2)
+[node name="PathReference" type="Line2D" parent="." unique_id=572021052]
+points = PackedVector2Array(640, 600, 400, 360, 400, 200, 480, 120, 640, 280, 800, 120, 880, 200, 880, 360, 640, 600)
+width = 60.0
+default_color = Color(0.36078432, 0.36078432, 0.36078432, 0.5529412)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=772500927]
 _spawnable_scenes = PackedStringArray("uid://bv3uvdtaoejuw")
