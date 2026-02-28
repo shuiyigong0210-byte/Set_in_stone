@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://d0od3win5ceb3"]
+
+[ext_resource type="Script" uid="uid://ymhg3cwmtv8i" path="res://world_2.gd" id="1_hlada"]
+[ext_resource type="Shader" uid="uid://dyfl353co8qfb" path="res://stone.gdshader" id="2_fu0tf"]
+[ext_resource type="Texture2D" uid="uid://c2eefnpuajswg" path="res://assets/icons/background/665191667034ac616a0eccbd5007baf8.png" id="3_mv2s0"]
+[ext_resource type="Texture2D" uid="uid://dc2420lb5yk0y" path="res://assets/brush/brush2.png" id="4_wys1n"]
+[ext_resource type="Texture2D" uid="uid://wo84x04r3i8o" path="res://assets/path/cca748d4d0408e5881ff2bb75a88ce93.png" id="5_yuvu5"]
+[ext_resource type="Script" uid="uid://ca57g0akub4me" path="res://chisel2.gd" id="6_ngp3s"]
+[ext_resource type="Texture2D" uid="uid://ck0u2mkmfrap8" path="res://assets/3d7ab68202c739e2ec0a06a04516c3db.png" id="7_ngp3s"]
+[ext_resource type="AudioStream" uid="uid://cibejok6o0fe1" path="res://assets/music/moving.mp3" id="8_56e56"]
+[ext_resource type="Texture2D" uid="uid://26tknkekt171" path="res://assets/icons/failure.png" id="9_56e56"]
+[ext_resource type="Texture2D" uid="uid://bot3ixi4i2lye" path="res://assets/icons/success.png" id="10_q40lw"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yuvu5"]
+viewport_path = NodePath("Stone/DrawingViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eiokd"]
+resource_local_to_scene = true
+shader = ExtResource("2_fu0tf")
+shader_parameter/u_trail_tex = SubResource("ViewportTexture_yuvu5")
+shader_parameter/u_depth_scale = 6.0
+shader_parameter/u_viewport_topleft = Vector2(0, 0)
+shader_parameter/u_viewport_size = Vector2(1, 1)
+shader_parameter/u_resolution = Vector2(1280, 720)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q40lw"]
+radius = 5.6568537
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_yoy7d"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_yoy7d"]
+a = Vector2(102, 261)
+b = Vector2(453, 616)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_n5srx"]
+a = Vector2(173, 219)
+b = Vector2(459, 498)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_5stuy"]
+a = Vector2(627, 341)
+b = Vector2(460, 497)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_lbh55"]
+a = Vector2(809, 487)
+b = Vector2(639, 345)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_3nhlu"]
+a = Vector2(1119, 200)
+b = Vector2(819, 496)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_hx72v"]
+a = Vector2(639, 459)
+b = Vector2(462, 615)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_bs22r"]
+a = Vector2(811, 611)
+b = Vector2(641, 460)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_m8pcj"]
+a = Vector2(826, 615)
+b = Vector2(1177, 265)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_8lp45"]
+a = Vector2(115, 268)
+b = Vector2(165, 222)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uq7yn"]
+radius = 24.186773
+
+[node name="world2" type="Node2D" unique_id=579953642]
+script = ExtResource("1_hlada")
+
+[node name="Stone" type="StaticBody2D" parent="." unique_id=1123233256]
+
+[node name="Sprite2D" type="Sprite2D" parent="Stone" unique_id=1646935325]
+material = SubResource("ShaderMaterial_eiokd")
+position = Vector2(638.50006, 361.50003)
+scale = Vector2(0.8462051, 0.8257403)
+texture = ExtResource("3_mv2s0")
+
+[node name="DrawingViewport" type="SubViewport" parent="Stone" unique_id=632021423]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(2048, 2048)
+render_target_clear_mode = 1
+render_target_update_mode = 4
+
+[node name="Brush" type="Sprite2D" parent="Stone/DrawingViewport" unique_id=302737792]
+modulate = Color(1, 1, 1, 0.2509804)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_wys1n")
+
+[node name="path2" type="Sprite2D" parent="." unique_id=1732263021]
+position = Vector2(625, 282)
+texture = ExtResource("5_yuvu5")
+
+[node name="Chisel" type="CharacterBody2D" parent="." unique_id=1365377533]
+script = ExtResource("6_ngp3s")
+
+[node name="Sprite2D" type="Sprite2D" parent="Chisel" unique_id=178031280]
+position = Vector2(22, 29)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("7_ngp3s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chisel" unique_id=1943577640]
+position = Vector2(1.0000001, 1)
+rotation = 2.3631759
+shape = SubResource("CircleShape2D_q40lw")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Chisel" unique_id=307378878]
+replication_config = SubResource("SceneReplicationConfig_yoy7d")
+
+[node name="MoveSound" type="AudioStreamPlayer2D" parent="Chisel" unique_id=1264463365]
+stream = ExtResource("8_56e56")
+volume_db = 24.0
+parameters/looping = true
+
+[node name="GameOverUI" type="CanvasLayer" parent="." unique_id=1607948424]
+
+[node name="RestartButton" type="Button" parent="GameOverUI" unique_id=1415491147]
+visible = false
+offset_left = 369.0
+offset_top = 77.0
+offset_right = 934.0
+offset_bottom = 586.0
+icon = ExtResource("9_56e56")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="WinButton" type="Button" parent="GameOverUI" unique_id=1004838789]
+visible = false
+offset_left = 303.0
+offset_top = 4.0
+offset_right = 1003.0
+offset_bottom = 704.0
+icon = ExtResource("10_q40lw")
+flat = true
+icon_alignment = 1
+
+[node name="DeadZone" type="Area2D" parent="." unique_id=1503375951]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeadZone" unique_id=470616388]
+shape = SubResource("SegmentShape2D_yoy7d")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="DeadZone" unique_id=1637941839]
+shape = SubResource("SegmentShape2D_n5srx")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="DeadZone" unique_id=1823511178]
+shape = SubResource("SegmentShape2D_5stuy")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="DeadZone" unique_id=1780473717]
+shape = SubResource("SegmentShape2D_lbh55")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="DeadZone" unique_id=670525196]
+shape = SubResource("SegmentShape2D_3nhlu")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="DeadZone" unique_id=422977715]
+shape = SubResource("SegmentShape2D_hx72v")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="DeadZone" unique_id=409733106]
+shape = SubResource("SegmentShape2D_bs22r")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="DeadZone" unique_id=833249925]
+shape = SubResource("SegmentShape2D_m8pcj")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="DeadZone" unique_id=958911576]
+shape = SubResource("SegmentShape2D_8lp45")
+
+[node name="Checkpoints" type="Area2D" parent="." unique_id=2109088782]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints" unique_id=403328150]
+position = Vector2(1126, 254)
+shape = SubResource("CircleShape2D_uq7yn")
