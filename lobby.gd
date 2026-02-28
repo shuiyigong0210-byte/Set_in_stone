@@ -7,39 +7,33 @@ var port = 8910
 @onready var join_btn = $JoinButton
 @onready var start_btn = $StartButton
 @onready var ip_input = $IPInput
-@onready var debug_btn = $DebugButton # 确保你的场景里有这个按钮
+@onready var debug_btn = $DebugButton
 
 func _ready():
 	start_btn.visible = false
 	host_btn.pressed.connect(_on_host_pressed)
 	join_btn.pressed.connect(_on_join_pressed)
 	start_btn.pressed.connect(_on_start_pressed)
-	# 绑定新增加的 Debug 按钮
 	debug_btn.pressed.connect(_on_debug_pressed)
 	
 	multiplayer.connected_to_server.connect(_on_connection_success)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
-# --- 新增的 Debug 逻辑 ---
+# --- DEBUG 模式 ---
 func _on_debug_pressed():
-	# 1. 开启全局 Debug 标记（需要你已经建好 GameConfig.gd）
 	GameConfig.is_debug_mode = true
-	print("--- DEBUG 模式开启：一人控制四个方向 ---")
-	
-	# 2. Debug 模式本质上是本地房主，直接创建服务器
 	var error = peer.create_server(port, 2)
 	if error == OK:
 		multiplayer.multiplayer_peer = peer
-		# 3. Debug 模式不需要等别人，直接切换场景
+		# Debug 模式下直接同步状态并跳场景
+		rpc("sync_game_config", true)
 		change_scene()
 	else:
 		print("Debug 模式启动失败: ", error)
 
-# --- 原有的 Host/Join 逻辑 ---
-
+# --- 房主模式 ---
 func _on_host_pressed():
-	# 房主模式不开启全局 Debug 标记
 	GameConfig.is_debug_mode = false
 	var error = peer.create_server(port, 2)
 	if error == OK:
@@ -51,6 +45,7 @@ func _on_host_pressed():
 	else:
 		print("创建服务器失败: ", error)
 
+# --- 加入模式 ---
 func _on_join_pressed():
 	GameConfig.is_debug_mode = false
 	var ip = ip_input.text if ip_input.text != "" else "127.0.0.1"
@@ -63,8 +58,25 @@ func _on_join_pressed():
 	else:
 		print("创建客户端失败: ", error)
 
-# --- 场景切换与回调 ---
+# --- 核心同步逻辑 ---
 
+func _on_start_pressed():
+	# 房主开始前，先确保所有人的配置一致
+	rpc("sync_game_config", GameConfig.is_debug_mode)
+	# 通知所有人切换场景
+	rpc("change_scene")
+
+@rpc("authority", "call_local", "reliable")
+func sync_game_config(debug_state):
+	# 这一步非常重要：确保所有客户端都知道现在是不是 Debug 模式
+	GameConfig.is_debug_mode = debug_state
+	print("同步全局配置：Debug 模式 = ", debug_state)
+
+@rpc("authority", "call_local", "reliable")
+func change_scene():
+	get_tree().change_scene_to_file("res://world.tscn")
+
+# --- 回调 ---
 func _on_connection_success():
 	print("已成功连接到房主！")
 
@@ -74,12 +86,7 @@ func _on_connection_failed():
 	join_btn.disabled = false
 
 func _on_peer_connected(id):
-	print("新玩家加入，ID: ", id)
-
-func _on_start_pressed():
-	# 正常多人模式，房主点击开始，通知所有人
-	rpc("change_scene")
-
-@rpc("authority", "call_local", "reliable")
-func change_scene():
-	get_tree().change_scene_to_file("res://world.tscn")
+	print("玩家加入 ID: ", id)
+	# 当有人加入时，如果房主已经在 Debug 模式，可以再次同步
+	if multiplayer.is_server():
+		rpc_id(id, "sync_game_config", GameConfig.is_debug_mode)

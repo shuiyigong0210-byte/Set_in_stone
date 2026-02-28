@@ -1,103 +1,93 @@
 extends Node2D
 
-@onready var stone_sprite = $Stone/Sprite2D
-@onready var drawing_viewport = $Stone/DrawingViewport
-@onready var brush = $Stone/DrawingViewport/Brush
 @onready var chisel = $Chisel
-
-# UI 引用
+@onready var brush = $Stone/DrawingViewport/Brush
+@onready var drawing_viewport = $Stone/DrawingViewport
 @onready var restart_button = $GameOverUI/RestartButton
-@onready var win_button = $GameOverUI/WinButton # 新增：成功按钮引用
-
-# 区域节点引用
+@onready var win_button = $GameOverUI/WinButton
 @onready var dead_zone = $DeadZone
-@onready var checkpoints = $Checkpoints # 新增：成功点区域引用
+@onready var checkpoints = $Checkpoints
 
 func _ready():
-	# 1. 初始 UI 设置
-	if restart_button:
-		restart_button.visible = false
-		restart_button.pressed.connect(_on_restart_pressed)
+	# 1. 初始化 UI 和位置
+	restart_button.visible = false
+	win_button.visible = false
+	restart_button.pressed.connect(_on_restart_button_clicked)
+	win_button.pressed.connect(_on_restart_button_clicked)
 	
-	if win_button: # 新增：初始化成功按钮
-		win_button.visible = false
-		# 成功后点击按钮通常也是重新开始或下一关，这里设为重启
-		win_button.pressed.connect(_on_restart_pressed)
-	
-	# 2. 刻刀初始位置强制设定
 	if chisel:
 		chisel.global_position = Vector2(630, 620)
 
-	# 3. 禁区信号绑定 (失败判定)
-	if dead_zone:
-		dead_zone.body_entered.connect(_on_deadzone_hit)
-		
-	# 4. 成功点信号绑定 (胜利判定)
-	if checkpoints:
-		checkpoints.body_entered.connect(_on_checkpoints_hit)
-
-	# 5. 多人联机角色分配
+	# 2. 只有服务器（Host）监听物理碰撞和分发角色
 	if multiplayer.is_server():
-		await get_tree().create_timer(0.5).timeout
+		if dead_zone: dead_zone.body_entered.connect(_on_deadzone_hit)
+		if checkpoints: checkpoints.body_entered.connect(_on_checkpoints_hit)
+		
+		# --- 修复核心：重启场景后，立即重新给所有在线玩家分配角色 ---
+		await get_tree().create_timer(0.2).timeout # 稍微等一下确保客户端也加载完
 		_assign_roles()
-		multiplayer.peer_connected.connect(_assign_roles)
-		multiplayer.peer_disconnected.connect(_assign_roles)
-	
-	# 匹配画布尺寸
+		
+		# 监听新进来的玩家
+		if not multiplayer.peer_connected.is_connected(_assign_roles):
+			multiplayer.peer_connected.connect(_assign_roles)
+
 	drawing_viewport.size = get_viewport_rect().size
 
 func _assign_roles(_id = 0):
+	if not multiplayer.is_server(): return
 	var players = multiplayer.get_peers()
-	players.append(1) 
+	players.append(1) # 加入房主
 	players.sort()
 	for i in range(players.size()):
 		if i < 2:
 			rpc_id(players[i], "receive_role", i)
-
-func _process(_delta: float) -> void:
-	if chisel and brush:
-		brush.position = chisel.global_position
 
 @rpc("authority", "call_local", "reliable")
 func receive_role(index):
 	if chisel:
 		chisel.set_player_role(index)
 
-# --- 逻辑：撞击禁区 (失败) ---
+# --- 判定与同步逻辑 ---
+
 func _on_deadzone_hit(body):
-	if body == chisel or body.name == "Chisel":
-		show_game_over()
+	if body.name == "Chisel" or body == chisel:
+		rpc("sync_show_ui", "fail")
 
-# --- 逻辑：撞击检测点 (成功) ---
 func _on_checkpoints_hit(body):
-	if body == chisel or body.name == "Chisel":
-		show_win_screen()
+	if body.name == "Chisel" or body == chisel:
+		rpc("sync_show_ui", "win")
 
-func show_game_over():
-	if restart_button:
+@rpc("authority", "call_local", "reliable")
+func sync_show_ui(type):
+	if type == "fail":
 		restart_button.visible = true
-		_play_pop_animation(restart_button)
-	_freeze_chisel()
-
-func show_win_screen():
-	if win_button:
+		_pop_ui(restart_button)
+	else:
 		win_button.visible = true
-		_play_pop_animation(win_button)
+		_pop_ui(win_button)
 	_freeze_chisel()
 
-# 通用的弹出动画
-func _play_pop_animation(target_node):
-	target_node.scale = Vector2.ZERO
-	var tween = create_tween()
-	tween.tween_property(target_node, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_ELASTIC)
+func _on_restart_button_clicked():
+	# 任何一方点击按钮，都请求服务器执行全体重启
+	rpc_id(1, "request_restart")
 
-# 冻结刻刀的通用逻辑
-func _freeze_chisel():
-	if chisel:
-		chisel.set_physics_process(false)
-		chisel.set_process_input(false)
-		if chisel.has_node("MoveSound"):
-			chisel.get_node("MoveSound").stop()
+@rpc("any_peer", "call_local", "reliable")
+func request_restart():
+	if multiplayer.is_server():
+		rpc("sync_reload_scene")
 
-func _on_restart_pressed():
+@rpc("authority", "call_local", "reliable")
+func sync_reload_scene():
 	get_tree().reload_current_scene()
+
+func _freeze_chisel():
+	chisel.set_physics_process(false)
+	chisel.set_process_input(false)
+	if chisel.has_node("MoveSound"): chisel.get_node("MoveSound").stop()
+
+func _pop_ui(node):
+	node.scale = Vector2.ZERO
+	create_tween().tween_property(node, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_ELASTIC)
+
+func _process(_delta):
+	if chisel and brush: brush.position = chisel.global_position
