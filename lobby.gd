@@ -82,4 +82,4 @@ func _on_start_pressed():
 
 @rpc("authority", "call_local", "reliable")
 func change_scene():
-	get_tree().change_scene_to_file("res://World.tscn")
+	get_tree().change_scene_to_file("res://world.tscn")
