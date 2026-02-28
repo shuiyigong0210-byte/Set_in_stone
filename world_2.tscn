@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://c2eefnpuajswg" path="res://assets/icons/background/665191667034ac616a0eccbd5007baf8.png" id="3_mv2s0"]
 [ext_resource type="Texture2D" uid="uid://dc2420lb5yk0y" path="res://assets/brush/brush2.png" id="4_wys1n"]
 [ext_resource type="Texture2D" uid="uid://wo84x04r3i8o" path="res://assets/path/cca748d4d0408e5881ff2bb75a88ce93.png" id="5_yuvu5"]
+[ext_resource type="Script" uid="uid://ddr1dvujomt7k" path="res://path_2.gd" id="6_56e56"]
 [ext_resource type="Script" uid="uid://ca57g0akub4me" path="res://chisel2.gd" id="6_ngp3s"]
 [ext_resource type="Texture2D" uid="uid://ck0u2mkmfrap8" path="res://assets/3d7ab68202c739e2ec0a06a04516c3db.png" id="7_ngp3s"]
 [ext_resource type="AudioStream" uid="uid://cibejok6o0fe1" path="res://assets/music/moving.mp3" id="8_56e56"]
@@ -96,6 +97,7 @@ texture = ExtResource("4_wys1n")
 [node name="path2" type="Sprite2D" parent="." unique_id=1732263021]
 position = Vector2(625, 282)
 texture = ExtResource("5_yuvu5")
+script = ExtResource("6_56e56")
 
 [node name="Chisel" type="CharacterBody2D" parent="." unique_id=1365377533]
 script = ExtResource("6_ngp3s")
