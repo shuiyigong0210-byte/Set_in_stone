@@ -10,20 +10,11 @@ var port = 8910
 @onready var debug_btn = $DebugButton # 确保你的场景里有这个按钮
 
 func _ready():
-	# 确保 ClickSound 节点存在再进行绑定
-	if has_node("ClickSound"):
-		# 遍历场景中所有的按钮
-		for child in get_children():
-			if child is Button:
-				# 绑定点击音效
-				child.pressed.connect(func(): $ClickSound.play())
-	else:
-		print("警告：没找到 ClickSound 节点，请检查场景树！")
-
 	start_btn.visible = false
 	host_btn.pressed.connect(_on_host_pressed)
 	join_btn.pressed.connect(_on_join_pressed)
 	start_btn.pressed.connect(_on_start_pressed)
+	# 绑定新增加的 Debug 按钮
 	debug_btn.pressed.connect(_on_debug_pressed)
 	
 	multiplayer.connected_to_server.connect(_on_connection_success)

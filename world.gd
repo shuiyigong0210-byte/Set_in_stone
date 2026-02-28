@@ -14,15 +14,8 @@ func _ready():
 		multiplayer.peer_connected.connect(_assign_roles)
 		multiplayer.peer_disconnected.connect(_assign_roles)
 	
-	# Match the drawing viewport's size with the current viewport's size
-	drawing_viewport.size = get_viewport_rect().size
-	# Set the shader parameters
-	var viewport_rect: Rect2 = drawing_viewport.get_visible_rect()
-	var stone_rect: Rect2 = stone_sprite.global_transform * stone_sprite.get_rect()
-	var topleft_uv = (viewport_rect.position - stone_rect.position) / stone_rect.size
-	var size_uv = viewport_rect.size / stone_rect.size
-	stone_sprite.material.set_shader_parameter("u_viewport_topleft", topleft_uv)
-	stone_sprite.material.set_shader_parameter("u_viewport_size", size_uv)
+		# Match the drawing viewport's size with the current viewport's size
+		drawing_viewport.size = get_viewport_rect().size
 
 func _assign_roles(_id = 0):
 	var players = multiplayer.get_peers()
@@ -35,12 +28,8 @@ func _assign_roles(_id = 0):
 
 func _process(delta: float) -> void:
 	#var tex = drawing_viewport.get_texture()
-	#stone_sprite.material.set_shader_parameter("u_trail_tex", tex)
-	# Set the brush position to the chisel's relative position in the viewport
+	#stone_sprite.material.set_shader_parameter("trail_tex", tex)
 	brush.position = chisel.global_position
-	# Update resolution
-	var resolution = get_viewport().size
-	stone_sprite.material.set_shader_parameter("u_resolution", resolution)
 
 @rpc("authority", "call_local", "reliable")
 func receive_role(index):

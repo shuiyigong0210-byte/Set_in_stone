@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var speed = 400.0
 @export var friction = 0.1
-@export var boundary_margin = 20.0 
+@export var boundary_margin = 20.0
 
 var inputs = {"up": 0, "down": 0, "left": 0, "right": 0}
 var my_role = -1 # 0: 纵向(上下), 1: 横向(左右)
@@ -30,18 +30,10 @@ func _physics_process(_delta):
 			# --- DEBUG 逻辑：直接读取本地四个方向轴 ---
 			dir.x = Input.get_axis("move_left", "move_right")
 			dir.y = Input.get_axis("move_up", "move_down")
-			
-			# Debug 模式下也需要触发划痕同步（如果之前加了 add_stroke_point 记得写在这里）
-			if dir != Vector2.ZERO:
-				rpc("add_stroke_point", global_position)
 		else:
 			# --- 正常联网逻辑：综合多名玩家的输入数据 ---
 			dir.x = inputs["right"] - inputs["left"]
 			dir.y = inputs["down"] - inputs["up"]
-			
-			if dir != Vector2.ZERO:
-				# 正常模式下移动时也触发划痕
-				rpc("add_stroke_point", global_position)
 
 		# 执行移动逻辑
 		if dir != Vector2.ZERO:
@@ -50,12 +42,13 @@ func _physics_process(_delta):
 			velocity = velocity.lerp(Vector2.ZERO, friction)
 			
 		move_and_slide()
+		_handle_move_sound()
+		
 		if velocity.length() > 0:
-			# 计算目标角度（让刻刀指向移动方向）
-			# 如果你的刻刀贴图默认是“向上”的，用 velocity.angle() + PI/2
-			# 如果你的刻刀贴图默认是“向右”的，直接用 velocity.angle()
-			var target_rotation = velocity.angle() + PI/2 
+			# 计算目标角度
+			var target_rotation = velocity.angle() + PI/2
 			rotation = lerp_angle(rotation, target_rotation, 0.2)
+			
 		# 屏幕边界限制
 		_apply_boundary_limit()
 
@@ -65,9 +58,8 @@ func _apply_boundary_limit():
 	global_position.y = clamp(global_position.y, boundary_margin, screen_size.y - boundary_margin)
 
 func _input(_event):
-	# 如果是 Debug 模式，不需要执行下方的 RPC 输入逻辑，直接由 _physics_process 读取本地输入
+	# 如果是 Debug 模式，不需要执行下方的 RPC 输入逻辑
 	if GameConfig.is_debug_mode: return
-	
 	if my_role == -1: return
 
 	# 正常联网分工逻辑
@@ -89,14 +81,12 @@ func server_update_input(dir: String, val: int):
 	if is_multiplayer_authority():
 		inputs[dir] = val
 
-# 划痕同步函数（确保你的 World 下有 Line2D）
-@rpc("authority", "call_local", "unreliable")
-func add_stroke_point(pos: Vector2):
-	#var line = get_node_or_null("../Line2D")
-	#if line:
-		## 简单的性能优化：距离太近不加点
-		#if line.get_point_count() > 0:
-			#var last_p = line.get_point_position(line.get_point_count() - 1)
-			#if pos.distance_to(last_p) < 2.0: return
-		#line.add_point(pos)
-	pass
+func _handle_move_sound():
+	# 检查刻刀是否在移动
+	if velocity.length() > 0:
+		if !$MoveSound.playing:
+			$MoveSound.play()
+	else:
+		# 停下时停止声音
+		if $MoveSound.playing:
+			$MoveSound.stop()
