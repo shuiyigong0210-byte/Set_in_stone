@@ -2,12 +2,19 @@
 
 [ext_resource type="Script" uid="uid://buvy4d8ipwidm" path="res://lobby.gd" id="1_ll2xe"]
 [ext_resource type="Texture2D" uid="uid://b2veilyk4yl88" path="res://assets/icons/background/0270c3583503546586f6f6b3bca27f01.png" id="2_xrgmn"]
+[ext_resource type="FontFile" uid="uid://bnmbi1vmxhowr" path="res://assets/fonts/Xolonium-Regular.ttf" id="3_tftiq"]
+[ext_resource type="Texture2D" uid="uid://b6ah2sdcs1tyg" path="res://assets/icons/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="4_1gg6n"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xrgmn"]
+load_path = "res://.godot/imported/tile_0000.png-666dca4cc0ffcdda9add9aec319b0085.ctex"
 
 [node name="Lobby" type="Control" unique_id=221627476]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 43.0
+offset_bottom = 41.0
 script = ExtResource("1_ll2xe")
 metadata/_edit_group_ = true
 
@@ -20,11 +27,17 @@ expand_mode = 1
 
 [node name="HostButton" type="Button" parent="." unique_id=1831501438]
 layout_mode = 0
-offset_left = 444.0
-offset_top = 99.0
-offset_right = 857.0
-offset_bottom = 189.0
+offset_left = 500.0
+offset_top = 100.0
+offset_right = 800.0
+offset_bottom = 260.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.36847875, 0.36847895, 0.36847973, 1)
+theme_override_fonts/font = ExtResource("3_tftiq")
+theme_override_font_sizes/font_size = 30
+theme_override_icons/icon = SubResource("CompressedTexture2D_xrgmn")
 text = "Host"
+flat = true
 icon_alignment = 1
 expand_icon = true
 
@@ -35,28 +48,46 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 360.0
-offset_top = 229.0
-offset_right = 902.0
-offset_bottom = 340.0
+offset_left = 480.0
+offset_top = 280.0
+offset_right = 780.0
+offset_bottom = 440.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.39118522, 0.39118528, 0.39118612, 1)
+theme_override_fonts/font = ExtResource("3_tftiq")
+theme_override_font_sizes/font_size = 30
 text = "Join"
+icon = ExtResource("4_1gg6n")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="StartButton" type="Button" parent="." unique_id=375637841]
 layout_mode = 0
-offset_left = 525.0
-offset_top = 430.0
-offset_right = 787.0
-offset_bottom = 549.0
+offset_left = 500.0
+offset_top = 500.0
+offset_right = 800.0
+offset_bottom = 660.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.32729876, 0.3272991, 0.32729977, 1)
+theme_override_fonts/font = ExtResource("3_tftiq")
+theme_override_font_sizes/font_size = 30
 text = "Start"
+icon = ExtResource("4_1gg6n")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="IPInput" type="LineEdit" parent="." unique_id=1273925746]
 layout_mode = 0
-offset_left = 364.0
-offset_top = 564.0
-offset_right = 988.0
-offset_bottom = 677.0
+offset_left = 788.0
+offset_top = 337.0
+offset_right = 1151.0
+offset_bottom = 412.0
+placeholder_text = "IP"
+alignment = 1
 
 [node name="DebugButton" type="Button" parent="." unique_id=719508107]
 layout_mode = 1
