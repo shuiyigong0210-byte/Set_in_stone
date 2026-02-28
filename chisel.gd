@@ -8,6 +8,7 @@ var inputs = {"up": 0, "down": 0, "left": 0, "right": 0}
 var my_role = -1 # 0: 纵向(上下), 1: 横向(左右)
 
 func _ready():
+	global_position = Vector2(630, 620)
 	# 检查全局 Debug 状态
 	if GameConfig.is_debug_mode:
 		print("DEBUG 模式已激活：一人控制全方向")
