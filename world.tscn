@@ -8,14 +8,17 @@
 [ext_resource type="Texture2D" uid="uid://ck0u2mkmfrap8" path="res://assets/3d7ab68202c739e2ec0a06a04516c3db.png" id="6_dwbse"]
 [ext_resource type="AudioStream" uid="uid://d0i2jilw3iqjp" path="res://assets/music/BGM.mp3" id="7_pkg7o"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_dwbse"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_pkg7o"]
 viewport_path = NodePath("Stone/DrawingViewport")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pkg7o"]
 resource_local_to_scene = true
 shader = ExtResource("2_036b0")
-shader_parameter/trail_tex = SubResource("ViewportTexture_dwbse")
-shader_parameter/depth_scale = 1.0
+shader_parameter/u_trail_tex = SubResource("ViewportTexture_pkg7o")
+shader_parameter/u_depth_scale = 6.0
+shader_parameter/u_viewport_topleft = Vector2(0, 0)
+shader_parameter/u_viewport_size = Vector2(1, 1)
+shader_parameter/u_resolution = Vector2(1280, 720)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
 radius = 5.6568537
@@ -44,7 +47,7 @@ render_target_clear_mode = 1
 render_target_update_mode = 4
 
 [node name="Brush" type="Sprite2D" parent="Stone/DrawingViewport" unique_id=1937955280]
-modulate = Color(1, 1, 1, 0.1254902)
+modulate = Color(1, 1, 1, 0.2509804)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("4_dwbse")
 
