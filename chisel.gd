@@ -50,7 +50,12 @@ func _physics_process(_delta):
 			velocity = velocity.lerp(Vector2.ZERO, friction)
 			
 		move_and_slide()
-		
+		if velocity.length() > 0:
+			# 计算目标角度（让刻刀指向移动方向）
+			# 如果你的刻刀贴图默认是“向上”的，用 velocity.angle() + PI/2
+			# 如果你的刻刀贴图默认是“向右”的，直接用 velocity.angle()
+			var target_rotation = velocity.angle() + PI/2 
+			rotation = lerp_angle(rotation, target_rotation, 0.2)
 		# 屏幕边界限制
 		_apply_boundary_limit()
 
