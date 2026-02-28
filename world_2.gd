@@ -11,14 +11,14 @@ extends Node2D
 
 func _ready():
 	await get_tree().process_frame # 等一帧再判断
-	if path_2:
-		if not multiplayer.is_server():
-			# 方法 A: 彻底从本地树中移除（Join 端完全消失，绝对看不到）
-			path_2.queue_free() 
-			print("我是 Join，已物理删除路径节点")
-		else:
-			path_2.visible = true
-			print("我是 Host，路径已保留")
+
+	if not multiplayer.is_server():
+		# 方法 A: 彻底从本地树中移除（Join 端完全消失，绝对看不到）
+		path_2.queue_free() 
+		print("我是 Join，已物理删除路径节点")
+	else:
+		path_2.visible = true
+		print("我是 Host，路径已保留")
 
 	# 2. UI 初始化
 	restart_button.visible = false
