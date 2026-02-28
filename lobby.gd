@@ -7,19 +7,40 @@ var port = 8910
 @onready var join_btn = $JoinButton
 @onready var start_btn = $StartButton
 @onready var ip_input = $IPInput
+@onready var debug_btn = $DebugButton # 确保你的场景里有这个按钮
 
 func _ready():
 	start_btn.visible = false
 	host_btn.pressed.connect(_on_host_pressed)
 	join_btn.pressed.connect(_on_join_pressed)
 	start_btn.pressed.connect(_on_start_pressed)
+	# 绑定新增加的 Debug 按钮
+	debug_btn.pressed.connect(_on_debug_pressed)
 	
-	# 连接成功的回调
 	multiplayer.connected_to_server.connect(_on_connection_success)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 
+# --- 新增的 Debug 逻辑 ---
+func _on_debug_pressed():
+	# 1. 开启全局 Debug 标记（需要你已经建好 GameConfig.gd）
+	GameConfig.is_debug_mode = true
+	print("--- DEBUG 模式开启：一人控制四个方向 ---")
+	
+	# 2. Debug 模式本质上是本地房主，直接创建服务器
+	var error = peer.create_server(port, 2)
+	if error == OK:
+		multiplayer.multiplayer_peer = peer
+		# 3. Debug 模式不需要等别人，直接切换场景
+		change_scene()
+	else:
+		print("Debug 模式启动失败: ", error)
+
+# --- 原有的 Host/Join 逻辑 ---
+
 func _on_host_pressed():
+	# 房主模式不开启全局 Debug 标记
+	GameConfig.is_debug_mode = false
 	var error = peer.create_server(port, 2)
 	if error == OK:
 		multiplayer.multiplayer_peer = peer
@@ -31,6 +52,7 @@ func _on_host_pressed():
 		print("创建服务器失败: ", error)
 
 func _on_join_pressed():
+	GameConfig.is_debug_mode = false
 	var ip = ip_input.text if ip_input.text != "" else "127.0.0.1"
 	var error = peer.create_client(ip, port)
 	if error == OK:
@@ -40,6 +62,8 @@ func _on_join_pressed():
 		print("正在尝试连接: ", ip)
 	else:
 		print("创建客户端失败: ", error)
+
+# --- 场景切换与回调 ---
 
 func _on_connection_success():
 	print("已成功连接到房主！")
@@ -53,9 +77,9 @@ func _on_peer_connected(id):
 	print("新玩家加入，ID: ", id)
 
 func _on_start_pressed():
-	# 房主使用 RPC 通知所有人同步切换场景
+	# 正常多人模式，房主点击开始，通知所有人
 	rpc("change_scene")
 
 @rpc("authority", "call_local", "reliable")
 func change_scene():
-	get_tree().change_scene_to_file("res://world.tscn")
+	get_tree().change_scene_to_file("res://World.tscn")
