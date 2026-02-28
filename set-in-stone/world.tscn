@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://bv3uvdtaoejuw"]
+
+[ext_resource type="Script" uid="uid://dvvrapybb0ep2" path="res://world.gd" id="1_aqk2v"]
+[ext_resource type="Texture2D" uid="uid://b8g8ua52caiwi" path="res://kenney_ui-pack-rpg-expansion/PNG/panel_blue.png" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://dqylxj04drhtt" path="res://chisel.gd" id="2_tlwt5"]
+[ext_resource type="Texture2D" uid="uid://dckf2p5g3gixj" path="res://kenney_ui-pack-rpg-expansion/PNG/cursorSword_silver.png" id="3_aqk2v"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tlwt5"]
+radius = 5.8309517
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_aqk2v"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="World" type="Node2D" unique_id=1345131279]
+script = ExtResource("1_aqk2v")
+
+[node name="Stone" type="StaticBody2D" parent="." unique_id=2079262412]
+
+[node name="Sprite2D" type="Sprite2D" parent="Stone" unique_id=1049935039]
+position = Vector2(641, 346.50003)
+scale = Vector2(13.820002, 7.930001)
+texture = ExtResource("1_f3sb7")
+
+[node name="Chisel" type="CharacterBody2D" parent="." unique_id=1540427066]
+script = ExtResource("2_tlwt5")
+
+[node name="Sprite2D" type="Sprite2D" parent="Chisel" unique_id=2087846355]
+position = Vector2(20.499998, 23.750002)
+scale = Vector2(2.2058823, 2.283784)
+texture = ExtResource("3_aqk2v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chisel" unique_id=902898171]
+position = Vector2(-10.999999, -11)
+rotation = 2.3631759
+shape = SubResource("CircleShape2D_tlwt5")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="Chisel" unique_id=751260700]
+replication_config = SubResource("SceneReplicationConfig_aqk2v")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=572021052]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=772500927]
+_spawnable_scenes = PackedStringArray("uid://bv3uvdtaoejuw")
+spawn_path = NodePath("../Chisel")
