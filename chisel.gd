@@ -87,10 +87,11 @@ func server_update_input(dir: String, val: int):
 # 划痕同步函数（确保你的 World 下有 Line2D）
 @rpc("authority", "call_local", "unreliable")
 func add_stroke_point(pos: Vector2):
-	var line = get_node_or_null("../Line2D")
-	if line:
-		# 简单的性能优化：距离太近不加点
-		if line.get_point_count() > 0:
-			var last_p = line.get_point_position(line.get_point_count() - 1)
-			if pos.distance_to(last_p) < 2.0: return
-		line.add_point(pos)
+	#var line = get_node_or_null("../Line2D")
+	#if line:
+		## 简单的性能优化：距离太近不加点
+		#if line.get_point_count() > 0:
+			#var last_p = line.get_point_position(line.get_point_count() - 1)
+			#if pos.distance_to(last_p) < 2.0: return
+		#line.add_point(pos)
+	pass
