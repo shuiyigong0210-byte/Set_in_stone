@@ -10,28 +10,33 @@ extends Node2D
 @onready var path_2 = $Path2
 
 func _ready():
-	# 1. UI 初始化
+	# 1. 初始视觉设置：Join 进来第一时间隐藏路径
+	# 不管三七二十一，先检查是不是服务器，不是就关掉显示
+	if path_2:
+		if multiplayer.is_server():
+			path_2.visible = true
+			print("我是 Host，我能看到路径")
+		else:
+			path_2.visible = false
+			print("我是 Join，我看不见路径")
+
+	# 2. UI 初始化
 	restart_button.visible = false
 	win_button.visible = false
 	
-	# 失败按钮：重启本关
 	restart_button.pressed.connect(_on_restart_button_clicked)
-	# 胜利按钮：返回首页
 	win_button.pressed.connect(_on_win_button_clicked) 
 	
+	# 设定第二关初始位置
 	if chisel:
 		chisel.global_position = Vector2(160, 260)
 
-	# 2. 视觉控制：只有 Host 才能看到路径
-	if path_2:
-		path_2.visible = multiplayer.is_server()
-
-	# 3. 只有服务器处理逻辑
+	# 3. 只有服务器处理后端逻辑
 	if multiplayer.is_server():
 		if dead_zone: dead_zone.body_entered.connect(_on_deadzone_hit)
 		if checkpoints: checkpoints.body_entered.connect(_on_checkpoints_hit)
 		
-		# 分配角色：Join 玩家全向控制(99)，Host 观察(-1)
+		# 等待一下确保 Join 端的场景也实例好了再发角色
 		await get_tree().create_timer(0.3).timeout
 		_assign_special_roles()
 
@@ -43,7 +48,6 @@ func _on_restart_button_clicked():
 	rpc_id(1, "request_restart")
 
 func _on_win_button_clicked():
-	# 告诉服务器：玩家想要回首页了
 	rpc_id(1, "request_go_home")
 
 # --- 核心逻辑：服务器同步指令 ---
@@ -56,7 +60,6 @@ func request_restart():
 @rpc("any_peer", "call_local", "reliable")
 func request_go_home():
 	if multiplayer.is_server():
-		# 服务器通知所有人跳回 Lobby 场景
 		rpc("sync_change_scene", "res://lobby.tscn")
 
 @rpc("authority", "call_local", "reliable")
@@ -83,7 +86,7 @@ func sync_show_ui(type):
 		restart_button.visible = true
 		_pop_ui(restart_button)
 	else:
-		win_button.text = "返回大厅" # 修改文字增加清晰度
+		win_button.text = "返回大厅"
 		win_button.visible = true
 		_pop_ui(win_button)
 	_freeze_chisel()
@@ -91,10 +94,12 @@ func sync_show_ui(type):
 # --- 通用工具 ---
 
 func _assign_special_roles():
+	# 房主 ID 是 1
 	var peers = multiplayer.get_peers()
 	for id in peers:
-		if id != 1: rpc_id(id, "receive_role", 99)
-	rpc_id(1, "receive_role", -1)
+		if id != 1: 
+			rpc_id(id, "receive_role", 99) # 给 Join 玩家全向控制
+	rpc_id(1, "receive_role", -1) # 给 Host 观察权
 
 @rpc("authority", "call_local", "reliable")
 func receive_role(index):
