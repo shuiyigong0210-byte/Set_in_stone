@@ -9,7 +9,8 @@
 [ext_resource type="AudioStream" uid="uid://8tbqwaoo3xps" path="res://assets/music/moving.mp3" id="7_gbfbk"]
 [ext_resource type="AudioStream" uid="uid://d0i2jilw3iqjp" path="res://assets/music/BGM.mp3" id="7_pkg7o"]
 [ext_resource type="Texture2D" uid="uid://cvrcalj3b4ywf" path="res://assets/path/path1.png" id="9_ioo17"]
-[ext_resource type="Texture2D" uid="uid://by1hw24m10yoc" path="res://assets/icons/50c9b5f4c2632c3a87e499add853e6d5.jpg" id="10_wse8f"]
+[ext_resource type="Texture2D" uid="uid://26tknkekt171" path="res://assets/icons/failure.png" id="10_ic0uy"]
+[ext_resource type="Texture2D" uid="uid://bot3ixi4i2lye" path="res://assets/icons/success.png" id="11_k3n1d"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_pkg7o"]
 viewport_path = NodePath("Stone/DrawingViewport")
@@ -199,9 +200,24 @@ texture = ExtResource("9_ioo17")
 
 [node name="RestartButton" type="Button" parent="GameOverUI" unique_id=1452490155]
 visible = false
-offset_right = 8.0
-offset_bottom = 8.0
-icon = ExtResource("10_wse8f")
+offset_left = 369.0
+offset_top = 77.0
+offset_right = 934.0
+offset_bottom = 586.0
+icon = ExtResource("10_ic0uy")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="WinButton" type="Button" parent="GameOverUI" unique_id=79795373]
+visible = false
+offset_left = 303.0
+offset_top = 4.0
+offset_right = 1003.0
+offset_bottom = 704.0
+icon = ExtResource("11_k3n1d")
+flat = true
+icon_alignment = 1
 
 [node name="Checkpoints" type="Area2D" parent="." unique_id=1687948614]
 
