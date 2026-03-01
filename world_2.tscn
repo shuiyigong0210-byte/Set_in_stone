@@ -15,6 +15,7 @@
 [ext_resource type="AudioStream" uid="uid://bhc2676g8elb1" path="res://assets/music/failure.wav" id="13_5stuy"]
 [ext_resource type="AudioStream" uid="uid://btj3hycs8jjcu" path="res://assets/music/success.wav" id="14_lbh55"]
 [ext_resource type="AudioStream" uid="uid://cvu3l7xo3nxat" path="res://assets/music/set_in_stone_bgm.mp3" id="15_5stuy"]
+[ext_resource type="AudioStream" uid="uid://bdjydjtdlms6r" path="res://assets/music/sound2.mp3" id="16_lbh55"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yuvu5"]
 viewport_path = NodePath("Stone/DrawingViewport")
@@ -198,3 +199,8 @@ volume_db = 1.0
 stream = ExtResource("15_5stuy")
 autoplay = true
 parameters/looping = true
+
+[node name="round" type="AudioStreamPlayer2D" parent="." unique_id=1114967675]
+stream = ExtResource("16_lbh55")
+volume_db = 24.0
+autoplay = true

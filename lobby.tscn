@@ -92,6 +92,7 @@ placeholder_text = "IP"
 alignment = 1
 
 [node name="DebugButton" type="Button" parent="." unique_id=719508107]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 4.184
