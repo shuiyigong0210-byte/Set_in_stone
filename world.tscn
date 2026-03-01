@@ -11,6 +11,9 @@
 [ext_resource type="Texture2D" uid="uid://cvrcalj3b4ywf" path="res://assets/path/path1.png" id="9_ioo17"]
 [ext_resource type="Texture2D" uid="uid://26tknkekt171" path="res://assets/icons/failure.png" id="10_ic0uy"]
 [ext_resource type="Texture2D" uid="uid://bot3ixi4i2lye" path="res://assets/icons/success.png" id="11_k3n1d"]
+[ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="12_k3n1d"]
+[ext_resource type="AudioStream" uid="uid://snxow0n3csow" path="res://assets/music/win.mp3" id="13_2o6r5"]
+[ext_resource type="AudioStream" uid="uid://ce43gpxedbess" path="res://assets/music/faliure.mp3" id="14_70uel"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_pkg7o"]
 viewport_path = NodePath("Stone/DrawingViewport")
@@ -145,7 +148,6 @@ spawn_path = NodePath("../Chisel")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=683146846]
 stream = ExtResource("7_pkg7o")
-volume_db = 2.0
 autoplay = true
 parameters/looping = true
 
@@ -222,3 +224,15 @@ icon_alignment = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints" unique_id=893725483]
 position = Vector2(708, 604)
 shape = SubResource("CircleShape2D_ic0uy")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=901239655]
+stream = ExtResource("12_k3n1d")
+volume_db = 1.0
+
+[node name="WinSound" type="AudioStreamPlayer" parent="." unique_id=450102218]
+stream = ExtResource("13_2o6r5")
+volume_db = 1.0
+
+[node name="FailSound" type="AudioStreamPlayer" parent="." unique_id=1889026105]
+stream = ExtResource("14_70uel")
+volume_db = 2.0

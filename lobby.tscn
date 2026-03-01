@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://bnmbi1vmxhowr" path="res://assets/fonts/Xolonium-Regular.ttf" id="3_tftiq"]
 [ext_resource type="Texture2D" uid="uid://b6ah2sdcs1tyg" path="res://assets/icons/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="4_1gg6n"]
 [ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="5_1gg6n"]
-[ext_resource type="AudioStream" uid="uid://d0i2jilw3iqjp" path="res://assets/music/BGM.mp3" id="6_x4164"]
+[ext_resource type="AudioStream" uid="uid://bxsciifjv5i13" path="res://assets/music/BGM.mp3" id="6_x4164"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xrgmn"]
 load_path = "res://.godot/imported/tile_0000.png-666dca4cc0ffcdda9add9aec319b0085.ctex"
@@ -102,11 +102,11 @@ text = "Debug"
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="." unique_id=447726481]
 stream = ExtResource("5_1gg6n")
-volume_db = 10.0
+volume_db = 0.01
 
 [node name="BGMPlayer" type="AudioStreamPlayer" parent="." unique_id=750838454]
 stream = ExtResource("6_x4164")
-volume_db = 5.0
+volume_db = 4.0
 autoplay = true
 parameters/looping = true
 

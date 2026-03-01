@@ -51,6 +51,7 @@ func _ready():
 # --- Core Logic: Button Click Handling (RPC Calls) ---
 
 func _on_restart_button_clicked():
+	$ClickSound.play()
 	# If debug mode, reload directly
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		get_tree().reload_current_scene()
@@ -58,6 +59,7 @@ func _on_restart_button_clicked():
 		rpc_id(1, "request_restart")
 
 func _on_win_button_clicked():
+	$ClickSound.play()
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		get_tree().change_scene_to_file("res://lobby.tscn")
 	else:
@@ -86,13 +88,16 @@ func sync_change_scene(path):
 # --- Judgement and Display ---
 
 func _on_deadzone_hit(body):
+	$FailSound.play()
 	# Ensure judgement only happens on server and excludes non-chisel objects
 	if body == chisel or body.name == "Chisel":
 		rpc("sync_show_ui", "fail")
 
 func _on_checkpoints_hit(body):
+	$WinSound.play()
 	if body == chisel or body.name == "Chisel":
 		rpc("sync_show_ui", "win")
+		
 
 @rpc("authority", "call_local", "reliable")
 func sync_show_ui(type):
@@ -100,7 +105,6 @@ func sync_show_ui(type):
 		restart_button.visible = true
 		_pop_ui(restart_button)
 	else:
-		win_button.text = "Back to Lobby"
 		win_button.visible = true
 		_pop_ui(win_button)
 	_freeze_chisel()

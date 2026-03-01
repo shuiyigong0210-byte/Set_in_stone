@@ -51,10 +51,12 @@ func receive_role(index):
 # --- 核心逻辑：按钮点击处理 ---
 
 func _on_restart_button_clicked():
+	$ClickSound.play()
 	# 请求服务器执行全体重启
 	rpc_id(1, "request_restart")
 
 func _on_win_button_clicked():
+	$ClickSound.play()
 	# 请求服务器执行全体跳转
 	rpc_id(1, "request_next_level")
 
@@ -82,10 +84,13 @@ func sync_next_level(scene_path):
 # --- 判定与同步逻辑 ---
 
 func _on_deadzone_hit(body):
+	$FailSound.play()
 	if body.name == "Chisel" or body == chisel:
 		rpc("sync_show_ui", "fail")
+		
 
 func _on_checkpoints_hit(body):
+	$WinSound.play()
 	if body.name == "Chisel" or body == chisel:
 		rpc("sync_show_ui", "win")
 

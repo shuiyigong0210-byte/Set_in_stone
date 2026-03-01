@@ -34,6 +34,7 @@ func _on_debug_pressed():
 
 # --- Host Mode ---
 func _on_host_pressed():
+	$ClickSound.play()
 	GameConfig.is_debug_mode = false
 	var error = peer.create_server(port, 2)
 	if error == OK:
@@ -47,6 +48,7 @@ func _on_host_pressed():
 
 # --- Join Mode ---
 func _on_join_pressed():
+	$ClickSound.play()
 	GameConfig.is_debug_mode = false
 	var ip = ip_input.text if ip_input.text != "" else "127.0.0.1"
 	var error = peer.create_client(ip, port)
@@ -61,6 +63,7 @@ func _on_join_pressed():
 # --- Core Sync Logic ---
 
 func _on_start_pressed():
+	$ClickSound.play()
 	# Ensure all players have consistent configurations before the Host starts
 	rpc("sync_game_config", GameConfig.is_debug_mode)
 	# Notify everyone to switch scenes
