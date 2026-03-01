@@ -72,7 +72,7 @@ a = Vector2(115, 268)
 b = Vector2(165, 222)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uq7yn"]
-radius = 24.186773
+radius = 39.56008
 
 [node name="world2" type="Node2D" unique_id=579953642]
 script = ExtResource("1_hlada")
