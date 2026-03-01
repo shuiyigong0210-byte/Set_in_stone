@@ -88,12 +88,14 @@ func sync_change_scene(path):
 # --- Judgement and Display ---
 
 func _on_deadzone_hit(body):
+	$AudioStreamPlayer.stop()
 	$FailSound.play()
 	# Ensure judgement only happens on server and excludes non-chisel objects
 	if body == chisel or body.name == "Chisel":
 		rpc("sync_show_ui", "fail")
 
 func _on_checkpoints_hit(body):
+	$AudioStreamPlayer.stop()
 	$WinSound.play()
 	if body == chisel or body.name == "Chisel":
 		rpc("sync_show_ui", "win")

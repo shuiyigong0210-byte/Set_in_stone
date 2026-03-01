@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://bnmbi1vmxhowr" path="res://assets/fonts/Xolonium-Regular.ttf" id="3_tftiq"]
 [ext_resource type="Texture2D" uid="uid://b6ah2sdcs1tyg" path="res://assets/icons/kenney_ui-pack-pixel-adventure/Tiles/Large tiles/Thick outline/tile_0000.png" id="4_1gg6n"]
 [ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="5_1gg6n"]
-[ext_resource type="AudioStream" uid="uid://bxsciifjv5i13" path="res://assets/music/BGM.mp3" id="6_x4164"]
+[ext_resource type="AudioStream" uid="uid://cvu3l7xo3nxat" path="res://assets/music/set_in_stone_bgm.mp3" id="6_x4164"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xrgmn"]
 load_path = "res://.godot/imported/tile_0000.png-666dca4cc0ffcdda9add9aec319b0085.ctex"
@@ -92,7 +92,6 @@ placeholder_text = "IP"
 alignment = 1
 
 [node name="DebugButton" type="Button" parent="." unique_id=719508107]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 4.184

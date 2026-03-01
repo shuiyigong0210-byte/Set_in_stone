@@ -12,8 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://26tknkekt171" path="res://assets/icons/failure.png" id="9_56e56"]
 [ext_resource type="Texture2D" uid="uid://bot3ixi4i2lye" path="res://assets/icons/success.png" id="10_q40lw"]
 [ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="12_q40lw"]
-[ext_resource type="AudioStream" uid="uid://ce43gpxedbess" path="res://assets/music/faliure.mp3" id="13_n5srx"]
-[ext_resource type="AudioStream" uid="uid://cxwba7i20glpk" path="res://assets/music/win2.mp3" id="14_n5srx"]
+[ext_resource type="AudioStream" uid="uid://bhc2676g8elb1" path="res://assets/music/failure.wav" id="13_5stuy"]
+[ext_resource type="AudioStream" uid="uid://btj3hycs8jjcu" path="res://assets/music/success.wav" id="14_lbh55"]
+[ext_resource type="AudioStream" uid="uid://cvu3l7xo3nxat" path="res://assets/music/set_in_stone_bgm.mp3" id="15_5stuy"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_yuvu5"]
 viewport_path = NodePath("Stone/DrawingViewport")
@@ -186,9 +187,14 @@ stream = ExtResource("12_q40lw")
 volume_db = 0.05
 
 [node name="FailSound" type="AudioStreamPlayer" parent="." unique_id=1677518742]
-stream = ExtResource("13_n5srx")
+stream = ExtResource("13_5stuy")
 volume_db = 2.0
 
 [node name="WinSound" type="AudioStreamPlayer" parent="." unique_id=1448711459]
-stream = ExtResource("14_n5srx")
+stream = ExtResource("14_lbh55")
 volume_db = 1.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=581556810]
+stream = ExtResource("15_5stuy")
+autoplay = true
+parameters/looping = true

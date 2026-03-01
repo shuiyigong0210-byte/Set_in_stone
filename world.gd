@@ -84,12 +84,14 @@ func sync_next_level(scene_path):
 # --- 判定与同步逻辑 ---
 
 func _on_deadzone_hit(body):
+	$AudioStreamPlayer.stop()
 	$FailSound.play()
 	if body.name == "Chisel" or body == chisel:
 		rpc("sync_show_ui", "fail")
 		
 
 func _on_checkpoints_hit(body):
+	$AudioStreamPlayer.stop()
 	$WinSound.play()
 	if body.name == "Chisel" or body == chisel:
 		rpc("sync_show_ui", "win")

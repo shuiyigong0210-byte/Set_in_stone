@@ -7,13 +7,13 @@
 [ext_resource type="Texture2D" uid="uid://dc2420lb5yk0y" path="res://assets/brush/brush2.png" id="4_dwbse"]
 [ext_resource type="Texture2D" uid="uid://ck0u2mkmfrap8" path="res://assets/3d7ab68202c739e2ec0a06a04516c3db.png" id="6_dwbse"]
 [ext_resource type="AudioStream" uid="uid://cibejok6o0fe1" path="res://assets/music/moving.mp3" id="7_gbfbk"]
-[ext_resource type="AudioStream" uid="uid://bxsciifjv5i13" path="res://assets/music/BGM.mp3" id="7_pkg7o"]
+[ext_resource type="AudioStream" uid="uid://cvu3l7xo3nxat" path="res://assets/music/set_in_stone_bgm.mp3" id="8_70uel"]
 [ext_resource type="Texture2D" uid="uid://cvrcalj3b4ywf" path="res://assets/path/path1.png" id="9_ioo17"]
 [ext_resource type="Texture2D" uid="uid://26tknkekt171" path="res://assets/icons/failure.png" id="10_ic0uy"]
 [ext_resource type="Texture2D" uid="uid://bot3ixi4i2lye" path="res://assets/icons/success.png" id="11_k3n1d"]
 [ext_resource type="AudioStream" uid="uid://c0ytdnyxup7w5" path="res://assets/music/click.mp3" id="12_k3n1d"]
-[ext_resource type="AudioStream" uid="uid://snxow0n3csow" path="res://assets/music/win.mp3" id="13_2o6r5"]
-[ext_resource type="AudioStream" uid="uid://ce43gpxedbess" path="res://assets/music/faliure.mp3" id="14_70uel"]
+[ext_resource type="AudioStream" uid="uid://btj3hycs8jjcu" path="res://assets/music/success.wav" id="13_70uel"]
+[ext_resource type="AudioStream" uid="uid://bhc2676g8elb1" path="res://assets/music/failure.wav" id="14_70uel"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_pkg7o"]
 viewport_path = NodePath("Stone/DrawingViewport")
@@ -147,7 +147,7 @@ _spawnable_scenes = PackedStringArray("uid://bv3uvdtaoejuw")
 spawn_path = NodePath("../Chisel")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=683146846]
-stream = ExtResource("7_pkg7o")
+stream = ExtResource("8_70uel")
 autoplay = true
 parameters/looping = true
 
@@ -230,7 +230,7 @@ stream = ExtResource("12_k3n1d")
 volume_db = 1.0
 
 [node name="WinSound" type="AudioStreamPlayer" parent="." unique_id=450102218]
-stream = ExtResource("13_2o6r5")
+stream = ExtResource("13_70uel")
 volume_db = 1.0
 
 [node name="FailSound" type="AudioStreamPlayer" parent="." unique_id=1889026105]
