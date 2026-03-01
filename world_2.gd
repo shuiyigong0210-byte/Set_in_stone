@@ -10,48 +10,48 @@ extends Node2D
 @onready var path_2 = $Path2
 
 func _ready():
-	# 1. UI 初始化
+	# 1. UI Initialization
 	restart_button.visible = false
 	win_button.visible = false
 	
-	# 注意：如果你从之前的代码复制，确保这里没有特殊不可见字符（如多余的空格）
+	# Note: If copying from previous code, ensure there are no special invisible characters
 	restart_button.pressed.connect(_on_restart_button_clicked)
 	win_button.pressed.connect(_on_win_button_clicked)
 	
-	# 2. 设定第二关初始位置
+	# 2. Set Level 2 initial position
 	if chisel:
 		chisel.global_position = Vector2(160, 260)
-		# 确保物理控制权
+		# Ensure physics authority
 		chisel.set_multiplayer_authority(1)
 
-	# --- 3. 调试与联网逻辑分流 ---
+	# --- 3. Debug and Networking Logic Branching ---
 	
-	# 如果是单机直接按 F6 运行（没有 peer）
+	# If running locally via F6 (no peer)
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
-		print("【Debug】检测到单机运行，自动分配全向控制权(99)")
+		print("[Debug] Local run detected, auto-assigning omni-directional control (99)")
 		if chisel:
-			chisel.set_player_role(99) # 这样你直接跑场景就能动了
+			chisel.set_player_role(99) # Allows movement when running the scene directly
 	
-	# 如果是正常的联机状态（Host 或 Join）
+	# If in a normal networked state (Host or Join)
 	else:
 		if multiplayer.is_server():
-			# 房主监听碰撞
+			# Host listens for collisions
 			if dead_zone: dead_zone.body_entered.connect(_on_deadzone_hit)
 			if checkpoints: checkpoints.body_entered.connect(_on_checkpoints_hit)
 			
-			# 等待 Join 玩家进入后分发角色
+			# Wait for Join player to enter then distribute roles
 			await get_tree().create_timer(0.5).timeout
 			_assign_special_roles()
 		else:
-			# Join 端：路径已经通过它自己的 Path2.gd 脚本隐藏了（如果有的话）
+			# Join side: Path is already hidden via its own Path2.gd script (if applicable)
 			pass
 
 	drawing_viewport.size = get_viewport_rect().size
 
-# --- 核心逻辑：按钮点击处理 (RPC 调用) ---
+# --- Core Logic: Button Click Handling (RPC Calls) ---
 
 func _on_restart_button_clicked():
-	# 如果是单机调试，直接重启
+	# If debug mode, reload directly
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		get_tree().reload_current_scene()
 	else:
@@ -63,7 +63,7 @@ func _on_win_button_clicked():
 	else:
 		rpc_id(1, "request_go_home")
 
-# --- 核心逻辑：服务器同步指令 ---
+# --- Core Logic: Server Sync Commands ---
 
 @rpc("any_peer", "call_local", "reliable")
 func request_restart():
@@ -83,10 +83,10 @@ func sync_reload_scene():
 func sync_change_scene(path):
 	get_tree().change_scene_to_file(path)
 
-# --- 判定与显示 ---
+# --- Judgement and Display ---
 
 func _on_deadzone_hit(body):
-	# 确保只在服务器判定，并排除非刻刀物体
+	# Ensure judgement only happens on server and excludes non-chisel objects
 	if body == chisel or body.name == "Chisel":
 		rpc("sync_show_ui", "fail")
 
@@ -100,23 +100,23 @@ func sync_show_ui(type):
 		restart_button.visible = true
 		_pop_ui(restart_button)
 	else:
-		win_button.text = "返回大厅"
+		win_button.text = "Back to Lobby"
 		win_button.visible = true
 		_pop_ui(win_button)
 	_freeze_chisel()
 
-# --- 通用工具 ---
+# --- Utilities ---
 
 func _assign_special_roles():
 	var peers = multiplayer.get_peers()
-	# 服务器设为观察者 (-1)
+	# Set server as observer (-1)
 	if chisel:
 		chisel.set_player_role(-1)
 	
-	# 给 Join 玩家发送 99 角色
+	# Send role 99 to Join players
 	for id in peers:
 		if id != 1: 
-			print("【Host】分配 99 给玩家: ", id)
+			print("[Host] Assigning 99 to player: ", id)
 			rpc_id(id, "receive_role", 99) 
 
 @rpc("authority", "call_local", "reliable")

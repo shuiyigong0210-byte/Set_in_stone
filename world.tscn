@@ -112,7 +112,6 @@ texture = ExtResource("4_dwbse")
 
 [node name="Chisel" type="CharacterBody2D" parent="." unique_id=1540427066]
 script = ExtResource("2_tlwt5")
-speed = 200.0
 
 [node name="Sprite2D" type="Sprite2D" parent="Chisel" unique_id=2087846355]
 position = Vector2(22, 29)
@@ -130,7 +129,6 @@ replication_config = SubResource("SceneReplicationConfig_aqk2v")
 [node name="MoveSound" type="AudioStreamPlayer2D" parent="Chisel" unique_id=379202245]
 stream = ExtResource("7_gbfbk")
 volume_db = 24.0
-parameters/looping = true
 
 [node name="PathReference" type="Line2D" parent="." unique_id=572021052]
 show_behind_parent = true

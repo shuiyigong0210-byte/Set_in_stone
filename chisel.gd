@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export var speed = 400.0
+@export var speed = 200.0
 @export var friction = 0.1
 @export var boundary_margin = 20.0
 
@@ -11,16 +11,16 @@ func _ready():
 	global_position = Vector2(630, 620)
 	# 检查全局 Debug 状态
 	if GameConfig.is_debug_mode:
-		print("DEBUG 模式已激活：一人控制全方向")
+		print("DDEBUG Mode Active: Full Control Enabled")
 
 func set_player_role(index):
 	my_role = index
 	# 如果不是 Debug 模式，才显示分工提示
 	if !GameConfig.is_debug_mode:
 		if index == 0:
-			print("你是【纵向领航员】：负责控制 上/下")
+			print("[Role] You are Vertical Pilot: Move UP/DOWN")
 		elif index == 1:
-			print("你是【横向领航员】：负责控制 左/右")
+			print("[Role] You are Horizontal Pilot: Move LEFT/RIGHT")
 
 func _physics_process(_delta):
 	# 只有房主（Authority）执行物理移动
@@ -84,7 +84,7 @@ func server_update_input(dir: String, val: int):
 
 func _handle_move_sound():
 	# 检查刻刀是否在移动
-	if velocity.length() > 0:
+	if velocity.length() > 1:
 		if !$MoveSound.playing:
 			$MoveSound.play()
 	else:

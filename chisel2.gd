@@ -21,13 +21,11 @@ func _ready():
 # 由 World 脚本通过 RPC 调用，分配玩家职责
 func set_player_role(index):
 	my_role = index
-	if !GameConfig.is_debug_mode:
-		match index:
-			0: print("【分工】你是纵向领航员：控制 上/下")
-			1: print("【分工】你是横向领航员：控制 左/右")
-			99: print("【分工】你是执行官：负责全方向控制（盲操模式）")
-			-1: print("【分工】你是指挥官：负责观察并引导队友")
-
+	match index:
+		0: print("[Role] You are Vertical Pilot: Move UP/DOWN")
+		1: print("[Role] You are Horizontal Pilot: Move LEFT/RIGHT")
+		99: print("[Role] You are the Operator: Full Control Enabled")
+		-1: print("[Role] You are the Commander: Guide your partner!")
 func _physics_process(_delta):
 	# 只有服务器（房主）计算物理位移，确保两边刀的位置绝对同步
 	if is_multiplayer_authority():

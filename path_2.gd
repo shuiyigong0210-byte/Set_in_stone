@@ -10,10 +10,10 @@ func _ready() -> void:
 		self.visible = false
 		# 如果你担心它还是会闪现，直接在本地物理删除它
 		self.queue_free()
-		print("客户端：检测到身份为 Join，已移除路径引导图")
+		
 	else:
 		self.visible = true
-		print("服务端：检测到身份为 Host，保留路径引导图")
+		
 
 func _process(_delta: float) -> void:
 	pass
